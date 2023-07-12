@@ -1,0 +1,40 @@
+.navbar {
+  height: 60px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: #aea3b0;
+  color: white;
+  box-shadow: 0 2px 2px 2px rgba(9, 9, 9, 0.23);
+}
+
+.navbar-logo {
+  border-radius: 50%;
+  height: 40px;
+  padding: 0 30px;
+}
+
+.nav-menu {
+  margin-left: auto;
+}
+
+.nav-menu ul {
+  height: 60px;
+  display: flex;
+  padding: 0;
+  align-items: center;
+}
+.nav-menu li {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  list-style-type: none;
+  padding: 0 1.2rem;
+  transition: 0.5s ease;
+}
+.nav-menu li:hover {
+  background-color: #e3d0d8;
+  cursor: pointer;
+}

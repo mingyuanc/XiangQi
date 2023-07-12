@@ -1,0 +1,72 @@
+.game-area {
+  width: 100vw;
+  height: calc(100vh - 60px);
+  padding-top: 40px;
+  background-color: #edede9;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+.game-turn {
+  padding: 20px;
+}
+
+.game-container {
+  padding: 0px;
+  background-color: white;
+  /* width: calc(60vh / 8 * 9);
+  height: calc(60vh * 1.125 / 9 * 10); */
+  width: 70%;
+  min-width: 380px;
+  aspect-ratio: calc(2400 / 2700);
+  background-image: url("../assets/ChineseChessBoard.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  /* background-size: calc(60vh / 8 * 9) calc(60vh * 1.125); */
+  background-size: 88.9% 90%;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.piece {
+  width: 80%;
+  height: 80%;
+  font-size: larger;
+  font-weight: bolder;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.red {
+  background-color: #bf0603;
+}
+
+.black {
+  background-color: #495057;
+}
+
+.moveable {
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  background-color: #cba9ef;
+}
+.moveable:hover {
+  cursor: pointer;
+}
+
+.active:hover {
+  cursor: pointer;
+}
