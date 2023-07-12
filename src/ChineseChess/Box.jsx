@@ -4,7 +4,7 @@ function Box({ box, redTurn, isMoveable, isMoving, movePiece }) {
 
     let name = ""
     let element
-    if (box.hasPiece) {
+    if (box?.hasPiece) {
         name = `piece ${box.team}`
 
         if (!isMoving) {

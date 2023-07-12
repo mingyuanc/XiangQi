@@ -26,9 +26,23 @@ function Board({ state, redTurn, toggleTurn }) {
 
     return (
         <>
-            {state.map(piece => <Box key={piece.id} box={piece} redTurn={redTurn} isMoveable={moving} isMoving={moving} movePiece={() => movePiece(piece)} />)}
+            <div className="game-row">{Array(9).fill(<Box box={null} redTurn={false} isMoveable={true} isMoving={true} movePiece={null} />)}</div>
+            <div className="game-row">{Array(9).fill(<Box box={null} redTurn={false} isMoveable={true} isMoving={true} movePiece={null} />)}</div>
+            <div className="game-row">{Array(9).fill(<Box box={null} redTurn={false} isMoveable={true} isMoving={true} movePiece={null} />)}</div>
+            <div className="game-row">{Array(9).fill(<Box box={null} redTurn={false} isMoveable={true} isMoving={true} movePiece={null} />)}</div>
+            <div className="game-row">{Array(9).fill(<Box box={null} redTurn={false} isMoveable={true} isMoving={true} movePiece={null} />)}</div>
+            <div className="game-row">{Array(9).fill(<Box box={null} redTurn={false} isMoveable={true} isMoving={true} movePiece={null} />)}</div>
+            <div className="game-row">{Array(9).fill(<Box box={null} redTurn={false} isMoveable={true} isMoving={true} movePiece={null} />)}</div>
+            <div className="game-row">{Array(9).fill(<Box box={null} redTurn={false} isMoveable={true} isMoving={true} movePiece={null} />)}</div>
+            <div className="game-row">{Array(9).fill(<Box box={null} redTurn={false} isMoveable={true} isMoving={true} movePiece={null} />)}</div>
+            <div className="game-row">{Array(9).fill(<Box box={null} redTurn={false} isMoveable={true} isMoving={true} movePiece={null} />)}</div>
+
         </>
     )
 }
 
 export default Board
+
+
+
+// {state.map(piece => <Box key={piece.id} box={piece} redTurn={redTurn} isMoveable={moving} isMoving={moving} movePiece={() => movePiece(piece)} />)}
