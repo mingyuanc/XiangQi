@@ -10,7 +10,7 @@ let data = [
     { type: "Horse", img: "馬", team: "red" },
     { type: "Chariot", img: "車", team: "red" },
   ],
-  Array(9).indexOf(null),
+  Array(9).fill(null),
   [
     null,
     { type: "Cannon", img: "炮", team: "red" },
