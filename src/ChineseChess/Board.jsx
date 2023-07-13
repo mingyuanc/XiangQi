@@ -1,10 +1,11 @@
 import { useState } from "react";
 import Box from "./Box.jsx"
+import findMoves from "./util.js"
 
 function Board({ state, redTurn, toggleTurn }) {
     // TODO: make sure piece move is correct color
     const [moving, setMoving] = useState(false)
-    console.log(state)
+    const [moveable, setMovable] = useState(Array(10).fill(Array(9).fill(false)))
     function movePiece(row, col) {
         if (moving) {
             if (row == moving.row && col == moving.col) {
@@ -14,26 +15,28 @@ function Board({ state, redTurn, toggleTurn }) {
             const newState = state.map(arr => arr.slice())
             newState[row][col] = state[moving.row][moving.col]
             newState[moving.row][moving.col] = null
+            state[moving.row][moving.col].row = row
+            state[moving.row][moving.col].col = col
             toggleTurn(newState)
             setMoving(false)
         } else {
-            // TODO: find avail move and set isMoveable
+            setMovable(findMoves(state, state[row][col]))
             setMoving({ row: row, col: col })
         }
     }
     const tmp = [...Array(9).keys()]
     return (
         <>
-            <div className="game-row">{tmp.map(x => <Box box={state[0][x]} redTurn={redTurn} isMoveable={true} isMoving={moving} movePiece={() => movePiece(0, x)} />)}</div>
-            <div className="game-row">{tmp.map(x => <Box box={state[1][x]} redTurn={redTurn} isMoveable={true} isMoving={moving} movePiece={() => movePiece(1, x)} />)}</div>
-            <div className="game-row">{tmp.map(x => <Box box={state[2][x]} redTurn={redTurn} isMoveable={true} isMoving={moving} movePiece={() => movePiece(2, x)} />)}</div>
-            <div className="game-row">{tmp.map(x => <Box box={state[3][x]} redTurn={redTurn} isMoveable={true} isMoving={moving} movePiece={() => movePiece(3, x)} />)}</div>
-            <div className="game-row">{tmp.map(x => <Box box={state[4][x]} redTurn={redTurn} isMoveable={true} isMoving={moving} movePiece={() => movePiece(4, x)} />)}</div>
-            <div className="game-row">{tmp.map(x => <Box box={state[5][x]} redTurn={redTurn} isMoveable={true} isMoving={moving} movePiece={() => movePiece(5, x)} />)}</div>
-            <div className="game-row">{tmp.map(x => <Box box={state[6][x]} redTurn={redTurn} isMoveable={true} isMoving={moving} movePiece={() => movePiece(6, x)} />)}</div>
-            <div className="game-row">{tmp.map(x => <Box box={state[7][x]} redTurn={redTurn} isMoveable={true} isMoving={moving} movePiece={() => movePiece(7, x)} />)}</div>
-            <div className="game-row">{tmp.map(x => <Box box={state[8][x]} redTurn={redTurn} isMoveable={true} isMoving={moving} movePiece={() => movePiece(8, x)} />)}</div>
-            <div className="game-row">{tmp.map(x => <Box box={state[9][x]} redTurn={redTurn} isMoveable={true} isMoving={moving} movePiece={() => movePiece(9, x)} />)}</div>
+            <div className="game-row">{tmp.map(x => <Box key={`0${x}`} box={state[0][x]} redTurn={redTurn} isMoveable={moveable[0][x]} isMoving={moving} movePiece={() => movePiece(0, x)} />)}</div>
+            <div className="game-row">{tmp.map(x => <Box key={`1${x}`} box={state[1][x]} redTurn={redTurn} isMoveable={moveable[1][x]} isMoving={moving} movePiece={() => movePiece(1, x)} />)}</div>
+            <div className="game-row">{tmp.map(x => <Box key={`2${x}`} box={state[2][x]} redTurn={redTurn} isMoveable={moveable[2][x]} isMoving={moving} movePiece={() => movePiece(2, x)} />)}</div>
+            <div className="game-row">{tmp.map(x => <Box key={`3${x}`} box={state[3][x]} redTurn={redTurn} isMoveable={moveable[3][x]} isMoving={moving} movePiece={() => movePiece(3, x)} />)}</div>
+            <div className="game-row">{tmp.map(x => <Box key={`4${x}`} box={state[4][x]} redTurn={redTurn} isMoveable={moveable[4][x]} isMoving={moving} movePiece={() => movePiece(4, x)} />)}</div>
+            <div className="game-row">{tmp.map(x => <Box key={`5${x}`} box={state[5][x]} redTurn={redTurn} isMoveable={moveable[5][x]} isMoving={moving} movePiece={() => movePiece(5, x)} />)}</div>
+            <div className="game-row">{tmp.map(x => <Box key={`6${x}`} box={state[6][x]} redTurn={redTurn} isMoveable={moveable[6][x]} isMoving={moving} movePiece={() => movePiece(6, x)} />)}</div>
+            <div className="game-row">{tmp.map(x => <Box key={`7${x}`} box={state[7][x]} redTurn={redTurn} isMoveable={moveable[7][x]} isMoving={moving} movePiece={() => movePiece(7, x)} />)}</div>
+            <div className="game-row">{tmp.map(x => <Box key={`8${x}`} box={state[8][x]} redTurn={redTurn} isMoveable={moveable[8][x]} isMoving={moving} movePiece={() => movePiece(8, x)} />)}</div>
+            <div className="game-row">{tmp.map(x => <Box key={`9${x}`} box={state[9][x]} redTurn={redTurn} isMoveable={moveable[9][x]} isMoving={moving} movePiece={() => movePiece(9, x)} />)}</div>
 
         </>
     )
