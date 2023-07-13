@@ -7,6 +7,10 @@ function Board({ state, redTurn, toggleTurn }) {
     console.log(state)
     function movePiece(row, col) {
         if (moving) {
+            if (row == moving.row && col == moving.col) {
+                setMoving(false)
+                return
+            }
             const newState = state.map(arr => arr.slice())
             newState[row][col] = state[moving.row][moving.col]
             newState[moving.row][moving.col] = null
