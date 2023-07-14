@@ -45,7 +45,7 @@
 .piece {
   width: 80%;
   height: 80%;
-  font-size: 3vw;
+  font-size: 3vmin;
   font-weight: bold;
   color: white;
   border-radius: 50%;

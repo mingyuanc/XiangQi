@@ -1,12 +1,14 @@
+import { Coord, Piece, State, Team } from "./Interfaces";
+
 const moveables = () =>
   Array(10)
     .fill(null)
     .map((x) => Array(9).fill(false));
 
-const arrayRange = (start, end) =>
+const arrayRange = (start: number, end: number) =>
   [...Array(end - start + 1).keys()].map((i) => i + start);
 
-const isValid = (state, team, row, col) => {
+const isValid = (state: State, team: Team, row: number, col: number) => {
   if (row < 0 || row > 9) {
     return false;
   }
@@ -19,26 +21,24 @@ const isValid = (state, team, row, col) => {
   return true;
 };
 
-function findMoveChariot(state, piece, moves) {
-  const r = [],
-    c = [];
+function findMoveChariot(state: State, piece: Piece, moves: boolean[][]) {
+  const r: Piece[] = [],
+    c: Piece[] = [];
   for (let row = 0; row < state.length; row++) {
     for (let col = 0; col < state[0].length; col++) {
       if (state[row][col] === null) {
         continue;
       }
+      // ! is used as i have checked is not null above
       if (row == piece.row) {
-        r.push(state[row][col]);
+        r.push(state[row][col]!);
       }
       if (col == piece.col) {
-        c.push(state[row][col]);
+        c.push(state[row][col]!);
       }
     }
   }
-  function helper(isRow, arr, idx) {
-    if (idx == -1) {
-      return;
-    }
+  function helper(isRow: boolean, arr: Piece[], idx: number) {
     const axis = isRow ? piece.row : piece.col;
     const [start, end] = [idx - 1, idx + 1].map((x) => {
       if (x == -1 || x == arr.length) {
@@ -69,7 +69,7 @@ function findMoveChariot(state, piece, moves) {
   return moves;
 }
 
-function findMoveHorse(state, piece, moves) {
+function findMoveHorse(state: State, piece: Piece, moves: boolean[][]) {
   const row = piece.row,
     col = piece.col;
   const posMoves = [
@@ -110,38 +110,9 @@ function findMoveHorse(state, piece, moves) {
     .filter((move) => isValid(state, piece.team, move[0], move[1]))
     .map((move) => (moves[move[0]][move[1]] = true));
   return moves;
-  // function helper(isRow) {
-  //   const max = isRow ? 8 : 9;
-  //   const axis = isRow ? piece.row : piece.col;
-  //   const initial = isRow ? piece.col : piece.row;
-  //   const tmp = [initial - 1, initial + 1].map((val) => {
-  //     if (val < 0 || val > max) {
-  //       return;
-  //     }
-  //     if (isRow ? state[axis][val] : state[val][axis]) {
-  //       return;
-  //     }
-  //     const v = val < initial ? val - 1 : val + 1;
-  //     const tmp = [axis - 1, axis + 1].map((ax) => {
-  //       if (ax < 0 || ax > (isRow ? 8 : 7)) {
-  //         return;
-  //       }
-  //       if (isRow) {
-  //         moves[ax][v] = piece.team == state[ax][v]?.team ? false : true;
-  //       } else {
-  //         moves[v][ax] = piece.team == state[v][ax]?.team ? false : true;
-  //       }
-  //       return;
-  //     });
-  //     return;
-  //   });
-  // }
-  // helper(true);
-  // helper(false);
-  // return moves;
 }
 
-function findMoveElephant(state, piece, moves) {
+function findMoveElephant(state: State, piece: Piece, moves: boolean[][]) {
   const row = piece.row,
     col = piece.col;
 
@@ -166,7 +137,7 @@ function findMoveElephant(state, piece, moves) {
   return moves;
 }
 
-function findMoveAdvisor(state, piece, moves) {
+function findMoveAdvisor(state: State, piece: Piece, moves: boolean[][]) {
   const row = piece.row,
     col = piece.col;
 
@@ -197,23 +168,24 @@ function findMoveAdvisor(state, piece, moves) {
   return moves;
 }
 
-function findMoveCannon(state, piece, moves) {
-  const r = [],
-    c = [];
+function findMoveCannon(state: State, piece: Piece, moves: boolean[][]) {
+  const r: Piece[] = [],
+    c: Piece[] = [];
   for (let row = 0; row < state.length; row++) {
     for (let col = 0; col < state[0].length; col++) {
       if (state[row][col] === null) {
         continue;
       }
+      // ! is used becaused i have checked earlier
       if (row == piece.row) {
-        r.push(state[row][col]);
+        r.push(state[row][col]!);
       }
       if (col == piece.col) {
-        c.push(state[row][col]);
+        c.push(state[row][col]!);
       }
     }
   }
-  function helper(isRow, arr, idx) {
+  function helper(isRow: boolean, arr: Piece[], idx: number) {
     [idx - 2, idx + 2].map((i) => {
       if (i < 0 || i > arr.length - 1) {
         return;
@@ -250,7 +222,7 @@ function findMoveCannon(state, piece, moves) {
   return moves;
 }
 
-function findMoveSoldier(state, piece, moves) {
+function findMoveSoldier(state: State, piece: Piece, moves: boolean[][]) {
   const row = piece.row,
     col = piece.col;
   const posMoves = [piece.team == "red" ? [row + 1, col] : [row - 1, col]];
@@ -263,7 +235,7 @@ function findMoveSoldier(state, piece, moves) {
   return moves;
 }
 
-function findMoveGeneral(state, piece, moves) {
+function findMoveGeneral(state: State, piece: Piece, moves: boolean[][]) {
   const row = piece.row,
     col = piece.col;
   const posMoves = [
@@ -290,7 +262,7 @@ function findMoveGeneral(state, piece, moves) {
   return moves;
 }
 
-function findMove(state, piece) {
+function findMove(state: State, piece: Piece) {
   const moves = moveables();
 
   switch (piece.type) {
