@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Box from "./Box.js";
 import findMoves from "./util";
-import { IBoard, Coord } from "./Interfaces";
+import { IBoard, Coord } from "./types.js";
 
 function Board({ state, redTurn, toggleTurn }: IBoard) {
   // TODO: make sure piece move is correct color

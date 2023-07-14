@@ -1,4 +1,4 @@
-import { Coord, Piece, State, Team } from "./Interfaces";
+import { Coord, Piece, State, Team } from "./types";
 
 const moveables = () =>
   Array(10)

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Board from "./Board.js";
 import starting from "./starting.js";
 import "./ChineseChess.css";
-import { State } from "./Interfaces.js";
+import { State } from "./types.js";
 
 // TODO: find avail move and set isMoveable
 

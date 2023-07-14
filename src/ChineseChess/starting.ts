@@ -1,4 +1,4 @@
-import { NPiece, Team } from "./Interfaces";
+import { NPiece, Team } from "./types";
 
 let data: NPiece[][] = [
   [

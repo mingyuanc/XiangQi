@@ -1,4 +1,4 @@
-import { IBox } from "./Interfaces";
+import { IBox } from "./types";
 
 function Box({ box, redTurn, isMoveable, isMoving, movePiece }: IBox) {
   let name = "";
