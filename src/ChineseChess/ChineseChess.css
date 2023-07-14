@@ -78,3 +78,13 @@
 .active:hover {
   cursor: pointer;
 }
+
+.selected {
+  box-sizing: content-box;
+  border: 5px solid lightsalmon;
+}
+
+.eat {
+  box-sizing: content-box;
+  border: 5px solid #cba9ef;
+}

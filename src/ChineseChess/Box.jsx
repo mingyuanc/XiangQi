@@ -2,23 +2,28 @@ import React from "react";
 
 function Box({ box, redTurn, isMoveable, isMoving, movePiece }) {
     let name = ""
-    let element
+
+    // TODO revisit this algo
     if (box != null) {
-        name = `piece ${box.team}`
+        const isCurrTurn = box.team == (redTurn ? "red" : "black")
+        name = `piece ${box.team} ${isCurrTurn ? " active" : ""}`
         if (!isMoving) {
-            if (box.team == "red") {
-                element = redTurn
-                    ? <div className={name += " active"} onClick={movePiece}>{box.img}</div>
-                    : <div className={name} >{box.img}</div>
-            } else {
-                element = !redTurn
-                    ? <div className={name += " active"} onClick={movePiece}>{box.img}</div>
-                    : <div className={name} >{box.img}</div>
-            }
-            return (<div className="box">{element}</div>)
+            return (<div className="box"> {
+                isCurrTurn
+                    ? <div className={name} onClick={movePiece}>{box.img}</div>
+                    : <div className={name} >{box.img}</div>}
+            </div>)
         }
-        if (isMoveable) {
-            name += " active"
+        let element
+        // piece is the current selected piece
+        if (box.row == isMoving.row && box.col == isMoving.col) {
+            name += " selected"
+            element = <div className={name} onClick={movePiece}>{box.img}</div>
+            // piece can be eaten
+        } else if (isMoveable) {
+            name += " eat active"
+            element = <div className={name} onClick={movePiece}>{box.img}</div>
+        } else if (isCurrTurn) {
             element = <div className={name} onClick={movePiece}>{box.img}</div>
         } else {
             element = <div className={name} >{box.img}</div>

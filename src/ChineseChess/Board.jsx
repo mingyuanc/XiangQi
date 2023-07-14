@@ -7,33 +7,37 @@ function Board({ state, redTurn, toggleTurn }) {
     const [moving, setMoving] = useState(false)
     const [moveable, setMovable] = useState(Array(10).fill(Array(9).fill(false)))
     function movePiece(row, col) {
-        if (moving) {
-            if (row == moving.row && col == moving.col) {
-                setMoving(false)
-                return
-            }
-            const newState = state.map(arr => arr.slice())
-            newState[row][col] = state[moving.row][moving.col]
-            newState[moving.row][moving.col] = null
-            state[moving.row][moving.col].row = row
-            state[moving.row][moving.col].col = col
-            toggleTurn(newState)
-            setMoving(false)
-        } else {
+        if (moving == false) {
             const posMoves = findMoves(state, state[row][col])
-            console.log(row, col)
-            // todo clean this up
-            console.log(posMoves[row][col])
-            posMoves[row][col] = false;
-            console.log(posMoves)
-            if (posMoves.every(x => x.every(x => !x))) {
-                console.log("returned")
-                return
-            }
-            posMoves[row][col] = true;
             setMovable(posMoves)
             setMoving({ row: row, col: col })
+            return
         }
+        const currPiece = state[row][col]
+        const movPiece = state[moving.row][moving.col]
+
+        // if player wants to turn of moving
+        if (row == moving.row && col == moving.col) {
+            setMoving(false)
+            return
+        }
+
+        // to view move of another tile of same team
+        if (currPiece && (movPiece.team == currPiece.team)) {
+            const posMoves = findMoves(state, state[row][col])
+            setMovable(posMoves)
+            setMoving({ row: row, col: col })
+            return
+        }
+
+
+        const newState = state.map(arr => arr.slice())
+        newState[row][col] = state[moving.row][moving.col]
+        newState[moving.row][moving.col] = null
+        state[moving.row][moving.col].row = row
+        state[moving.row][moving.col].col = col
+        toggleTurn(newState)
+        setMoving(false)
     }
     const tmp = [...Array(9).keys()]
     return (
