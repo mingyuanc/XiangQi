@@ -22,6 +22,7 @@ function Board({ state, redTurn, toggleTurn }: IBoard) {
     // if player wants to turn of moving
     if (row == moving.row && col == moving.col) {
       setMoving(negCoord);
+      setMovable(Array(10).fill(Array(9).fill(false)));
       return;
     }
 
