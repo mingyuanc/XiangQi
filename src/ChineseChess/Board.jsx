@@ -20,7 +20,18 @@ function Board({ state, redTurn, toggleTurn }) {
             toggleTurn(newState)
             setMoving(false)
         } else {
-            setMovable(findMoves(state, state[row][col]))
+            const posMoves = findMoves(state, state[row][col])
+            console.log(row, col)
+            // todo clean this up
+            console.log(posMoves[row][col])
+            posMoves[row][col] = false;
+            console.log(posMoves)
+            if (posMoves.every(x => x.every(x => !x))) {
+                console.log("returned")
+                return
+            }
+            posMoves[row][col] = true;
+            setMovable(posMoves)
             setMoving({ row: row, col: col })
         }
     }

@@ -6,7 +6,20 @@ const moveables = () =>
 const arrayRange = (start, end) =>
   [...Array(end - start + 1).keys()].map((i) => i + start);
 
-function findMoveChariot(state, piece) {
+const isValid = (state, team, row, col) => {
+  if (row < 0 || row > 9) {
+    return false;
+  }
+  if (col < 0 || col > 8) {
+    return false;
+  }
+  if (state[row][col]?.team == team) {
+    return false;
+  }
+  return true;
+};
+
+function findMoveChariot(state, piece, moves) {
   const r = [],
     c = [];
   for (let row = 0; row < state.length; row++) {
@@ -22,7 +35,6 @@ function findMoveChariot(state, piece) {
       }
     }
   }
-  const moves = moveables();
   function helper(isRow, arr, idx) {
     if (idx == -1) {
       return;
@@ -61,28 +73,21 @@ function findMoveChariot(state, piece) {
   return moves;
 }
 
-function findMoveHorse(state, piece) {
-  const moves = moveables();
-  moves[piece.row][piece.col] = true;
+function findMoveHorse(state, piece, moves) {
   function helper(isRow) {
     const max = isRow ? 8 : 9;
     const axis = isRow ? piece.row : piece.col;
     const initial = isRow ? piece.col : piece.row;
     const tmp = [initial - 1, initial + 1].map((val) => {
-      console.log(val);
       if (val < 0 || val > max) {
-        console.log("border");
         return;
       }
       if (isRow ? state[axis][val] : state[val][axis]) {
-        console.log("blocked");
         return;
       }
       const v = val < initial ? val - 1 : val + 1;
       const tmp = [axis - 1, axis + 1].map((ax) => {
-        console.log("ax", ax);
         if (ax < 0 || ax > (isRow ? 10 : 9)) {
-          console.log("axis border");
           return;
         }
         if (isRow) {
@@ -100,22 +105,80 @@ function findMoveHorse(state, piece) {
   return moves;
 }
 
+function findMoveElephant(state, piece, moves) {
+  const row = piece.row,
+    col = piece.col;
+
+  const posMove = [
+    [row - 2, col - 2],
+    [row - 2, col + 2],
+    [row + 2, col - 2],
+    [row + 2, col + 2],
+  ];
+  posMove
+    // check if accross river
+    .filter((move) => (piece.team == "red" ? move[0] < 5 : move[0] > 4))
+    // check if move is on board and has no friendly troop
+    .filter((move) => isValid(state, piece.team, move[0], move[1]))
+    // check if its blocked
+    .filter(
+      (move) =>
+        state[Math.abs((move[0] + row) / 2)][Math.abs((move[1] + col) / 2)] ==
+        null
+    )
+    .map((move) => (moves[move[0]][move[1]] = true));
+  return moves;
+}
+
+function findMoveAdvisor(state, piece, moves) {
+  const row = piece.row,
+    col = piece.col;
+
+  const posMove =
+    piece.team == "red"
+      ? [
+          [0, 3],
+          [0, 5],
+          [1, 4],
+          [2, 3],
+          [2, 5],
+        ]
+      : [
+          [9, 3],
+          [9, 5],
+          [8, 4],
+          [7, 3],
+          [7, 5],
+        ];
+  posMove
+    // check if moveable
+    .filter(
+      (move) => Math.abs(move[0] - row) == 1 || Math.abs(move[0]) - col == 1
+    )
+    // check if move is on board and has no friendly troop
+    .filter((move) => isValid(state, piece.team, move[0], move[1]))
+    .map((move) => (moves[move[0]][move[1]] = true));
+  return moves;
+}
+
 function findMove(state, piece) {
+  const moves = moveables();
+
   switch (piece.type) {
     case "Chariot":
-      return findMoveChariot(state, piece);
+      return findMoveChariot(state, piece, moves);
     case "Horse":
-      return findMoveHorse(state, piece);
-    // case "Elephant":
-    //   return findMoveElephant(state, piece);
-    // case "Advisor":
-    //   return findMoveAdvisor(state, piece);
+      return findMoveHorse(state, piece, moves);
+    case "Elephant":
+      return findMoveElephant(state, piece, moves);
+    case "Advisor":
+      return findMoveAdvisor(state, piece, moves);
     // case "Cannon":
-    //   return findMoveCannon(state, piece);
+    //   return findMoveCannon(state, piece, moves);
     // case "Soldier":
-    //   return findMoveSoldier(state, piece);
+    //   return findMoveSoldier(state, piece, moves);
     // case "General":
-    //   return findMoveGeneral(state, piece);
+    //   return findMoveGeneral(state, piece, moves);
     default:
       console.log("todo");
       return Array(10)
