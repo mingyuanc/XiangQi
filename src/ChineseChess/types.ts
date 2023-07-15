@@ -1,4 +1,4 @@
-type Unit =
+export type Unit =
   | "Soldier"
   | "Cannon"
   | "Chariot"
@@ -6,8 +6,6 @@ type Unit =
   | "Elephant"
   | "Advisor"
   | "General";
-export type NPiece = Piece | null;
-export type State = NPiece[][];
 
 export enum Team {
   black = "black",
@@ -22,6 +20,10 @@ export interface Piece {
   row: number;
   col: number;
 }
+
+export type NPiece = Piece | null;
+
+export type State = NPiece[][];
 
 export interface Coord {
   row: number;

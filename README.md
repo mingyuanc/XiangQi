@@ -11,3 +11,7 @@
 
 1. Responsive Design
 2. How to account for pixel loss on rounding error
+
+# Things I want to achieve today
+
+1. finish general logic, esp the general cannot lock eyes rule

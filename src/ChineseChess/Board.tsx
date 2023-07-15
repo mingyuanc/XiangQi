@@ -3,30 +3,53 @@ import Box from "./Box.js";
 import findMoves from "./util";
 import { IBoard, Coord, Piece, State } from "./types.js";
 
+/**
+ *  Calculate possible moves for a given state
+ *  @param {Piece[]} pieces start index
+ *  @param {State} state end index
+ *  @param {Piece[]} pieces start index
+ *  @returns {Map<Piece, Array<Array<number>>>} A map of the piece to its possible safe moves
+ */
 function calMoves(
   pieces: Piece[],
-  state: State
+  state: State,
+  otherTeam: Piece[]
 ): Map<Piece, Array<Array<number>>> {
   const moves = new Map<Piece, Array<Array<number>>>();
-  pieces.map((piece) => moves.set(piece, findMoves(state, piece)));
+  pieces.map((piece) =>
+    moves.set(piece, findMoves(state, piece, pieces, otherTeam))
+  );
   return moves;
 }
+
+/**
+ *  Generate an empty 10 by 9 array of false to pass into the boxes
+ *  @returns {boolean[][]}
+ */
 const moveables: () => boolean[][] = () =>
   Array(10)
     .fill(null)
     .map(() => Array(9).fill(false));
 
 function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
-  // TODO: make sure piece move is correct color
   const negCoord: Coord = { row: -1, col: -1 };
   const [moving, setMoving] = useState({ row: -1, col: -1 });
   const [moveable, setMovable] = useState(Array(10).fill(Array(9).fill(false)));
-  const [posMoveRed, setPosMoveRed] = useState(calMoves(redPieces, state));
-  const [posMoveBlack, setPosMoveBlack] = useState(
-    calMoves(blackPieces, state)
+  // TODO a possible hint button
+  const [posMoveRed, setPosMoveRed] = useState(() =>
+    calMoves(redPieces, state, blackPieces)
   );
+  const [posMoveBlack, setPosMoveBlack] = useState(() =>
+    calMoves(blackPieces, state, redPieces)
+  );
+
+  /**
+   *  Processes the piece being moved
+   *  @param {number} row the row of the box being clicked
+   *  @param {number} col the column of the box being clicked
+   */
   function movePiece(row: number, col: number) {
-    // if havent move
+    // if havent started to move
     if (moving.row == -1) {
       //  type casting is safe as only pieces are clickable if havent move
       const currPiece: Piece = state[row][col] as Piece;
@@ -63,7 +86,6 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
       setMoving({ row: row, col: col });
       return;
     }
-
     // to move to position
     const newState = state.map((arr) => arr.slice());
     newState[row][col] = movPiece;
@@ -73,8 +95,8 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
     toggleTurn(newState, currPiece);
     setMoving(negCoord);
     setMovable(Array(10).fill(Array(9).fill(false)));
-    setPosMoveRed(calMoves(redPieces, newState));
-    setPosMoveBlack(calMoves(blackPieces, newState));
+    setPosMoveRed(calMoves(redPieces, newState, blackPieces));
+    setPosMoveBlack(calMoves(blackPieces, newState, redPieces));
   }
   const tmp = [...Array(9).keys()];
   return (
