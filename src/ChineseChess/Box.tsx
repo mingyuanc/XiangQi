@@ -1,12 +1,19 @@
 import { IBox } from "./types";
 
-function Box({ box, redTurn, isMoveable, isMoving, movePiece }: IBox) {
+function Box({
+  box,
+  redTurn,
+  isMoveable,
+  isMoving,
+  isChecked,
+  movePiece,
+}: IBox) {
   let name = "";
 
   // TODO revisit this algo
   if (box != null) {
     const isCurrTurn = box.team == (redTurn ? "red" : "black");
-    name = `piece ${box.team} ${isCurrTurn ? " active" : ""}`;
+    name = `piece ${box.team} ${isCurrTurn ? "active" : ""}`;
     if (!isMoving) {
       return (
         <div className="box">
@@ -35,6 +42,12 @@ function Box({ box, redTurn, isMoveable, isMoving, movePiece }: IBox) {
       name += " eat active";
       element = (
         <div className={name} onClick={movePiece}>
+          {box.img}
+        </div>
+      );
+    } else if (box.type == "General" && isCurrTurn && isChecked) {
+      element = (
+        <div className={(name += " eat")} onClick={movePiece}>
           {box.img}
         </div>
       );

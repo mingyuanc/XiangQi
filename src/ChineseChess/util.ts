@@ -74,7 +74,6 @@ function causeCheck(
           (move) => move[0] == general.row && move[1] == general.col
         );
         if (!outcome) {
-          console.log(piece, move, p, "solider");
         }
         break;
       case "Chariot":
@@ -82,7 +81,6 @@ function causeCheck(
           (move) => move[0] == general.row && move[1] == general.col
         );
         if (!outcome) {
-          console.log(piece, move, p, "charlito");
         }
         break;
       case "Horse":
@@ -90,7 +88,6 @@ function causeCheck(
           (move) => move[0] == general.row && move[1] == general.col
         );
         if (!outcome) {
-          console.log(piece, move, p, "horse");
         }
         break;
       case "Cannon":
@@ -98,7 +95,6 @@ function causeCheck(
           (move) => move[0] == general.row && move[1] == general.col
         );
         if (!outcome) {
-          console.log(piece, move, p, "cannon");
         }
         break;
       case "General":
@@ -109,7 +105,6 @@ function causeCheck(
             Math.max(general.row, p.row)
           ).filter((r) => newState[r][p.col]).length == 2
         ) {
-          console.log(piece, move, p, "general");
           outcome = false;
         }
         break;
@@ -157,7 +152,6 @@ function findMoveChariot(state: State, piece: Piece): Array<Array<number>> {
         // if no piece between piece and border
         return x < 0 ? 0 : isRow ? 8 : 9;
       } else {
-        console.log(x, arr);
         if (piece.team == arr[x].team) {
           const add = x < idx ? 1 : -1;
           return isRow ? arr[x].col + add : arr[x].row + add;

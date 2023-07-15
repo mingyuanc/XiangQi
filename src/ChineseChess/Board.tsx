@@ -3,6 +3,7 @@ import Box from "./Box.js";
 import findMoves from "./util";
 import { IBoard, Coord, Piece, State } from "./types.js";
 
+// --- these functions will be replaced via api call ---
 /**
  *  Calculate possible moves for a given state
  *  @param {Piece[]} pieces start index
@@ -21,6 +22,33 @@ function calMoves(
   );
   return moves;
 }
+
+const isChecked: (Piece: Piece, posMoves: Map<Piece, number[][]>) => boolean = (
+  piece,
+  posMoves
+) => {
+  for (let [key, value] of posMoves) {
+    for (let arr of value) {
+      if (arr[0] == piece.row && arr[1] == piece.col) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+const hasWon = (
+  General: Piece,
+  posMoveOwn: Map<Piece, number[][]>,
+  posMovesOppo: Map<Piece, number[][]>
+) => {
+  for (let [key, value] of posMoveOwn) {
+    if (value.length != 0) {
+      return false;
+    }
+  }
+  return isChecked(General, posMovesOppo);
+};
 
 /**
  *  Generate an empty 10 by 9 array of false to pass into the boxes
@@ -43,13 +71,41 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
     calMoves(blackPieces, state, redPieces)
   );
 
+  const [won, setWon] = useState(false);
+
+  // --- checking for checks ---
+  const redGeneral = redPieces.find((x) => x.type == "General")!;
+  const blackGeneral = blackPieces.find((x) => x.type == "General")!;
+
+  const _isChecked = redTurn
+    ? isChecked(redGeneral, posMoveBlack)
+    : isChecked(blackGeneral, posMoveRed);
+  // --- checking for win ---
+
+  if (
+    !won &&
+    hasWon(
+      !redTurn ? blackGeneral : redGeneral,
+      !redTurn ? posMoveBlack : posMoveRed,
+      !redTurn ? posMoveRed : posMoveBlack
+    )
+  ) {
+    alert(`${!redTurn ? "red" : "black"} has won!!!`);
+    setWon(true);
+    setMovable(Array(10).fill(Array(9).fill(false)));
+  }
+
   /**
    *  Processes the piece being moved
    *  @param {number} row the row of the box being clicked
    *  @param {number} col the column of the box being clicked
    */
   function movePiece(row: number, col: number) {
-    // if havent started to move
+    if (won) {
+      return;
+    }
+    // ----- if havent started to move -----
+
     if (moving.row == -1) {
       //  type casting is safe as only pieces are clickable if havent move
       const currPiece: Piece = state[row][col] as Piece;
@@ -62,7 +118,8 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
       setMoving({ row: row, col: col });
       return;
     }
-    // if have moved
+
+    // ------ if have moved -------
 
     const currPiece = state[row][col];
     // movPiece isnt null, checked in first if statement
@@ -109,6 +166,7 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
             redTurn={redTurn}
             isMoveable={moveable[0][x]}
             isMoving={moving}
+            isChecked={_isChecked}
             movePiece={() => movePiece(0, x)}
           />
         ))}
@@ -121,6 +179,7 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
             redTurn={redTurn}
             isMoveable={moveable[1][x]}
             isMoving={moving}
+            isChecked={_isChecked}
             movePiece={() => movePiece(1, x)}
           />
         ))}
@@ -133,6 +192,7 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
             redTurn={redTurn}
             isMoveable={moveable[2][x]}
             isMoving={moving}
+            isChecked={_isChecked}
             movePiece={() => movePiece(2, x)}
           />
         ))}
@@ -145,6 +205,7 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
             redTurn={redTurn}
             isMoveable={moveable[3][x]}
             isMoving={moving}
+            isChecked={_isChecked}
             movePiece={() => movePiece(3, x)}
           />
         ))}
@@ -157,6 +218,7 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
             redTurn={redTurn}
             isMoveable={moveable[4][x]}
             isMoving={moving}
+            isChecked={_isChecked}
             movePiece={() => movePiece(4, x)}
           />
         ))}
@@ -169,6 +231,7 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
             redTurn={redTurn}
             isMoveable={moveable[5][x]}
             isMoving={moving}
+            isChecked={_isChecked}
             movePiece={() => movePiece(5, x)}
           />
         ))}
@@ -181,6 +244,7 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
             redTurn={redTurn}
             isMoveable={moveable[6][x]}
             isMoving={moving}
+            isChecked={_isChecked}
             movePiece={() => movePiece(6, x)}
           />
         ))}
@@ -193,6 +257,7 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
             redTurn={redTurn}
             isMoveable={moveable[7][x]}
             isMoving={moving}
+            isChecked={_isChecked}
             movePiece={() => movePiece(7, x)}
           />
         ))}
@@ -205,6 +270,7 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
             redTurn={redTurn}
             isMoveable={moveable[8][x]}
             isMoving={moving}
+            isChecked={_isChecked}
             movePiece={() => movePiece(8, x)}
           />
         ))}
@@ -217,6 +283,7 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
             redTurn={redTurn}
             isMoveable={moveable[9][x]}
             isMoving={moving}
+            isChecked={_isChecked}
             movePiece={() => movePiece(9, x)}
           />
         ))}

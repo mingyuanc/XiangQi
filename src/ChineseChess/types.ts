@@ -35,6 +35,7 @@ export interface IBox {
   redTurn: boolean;
   isMoveable: boolean;
   isMoving: Coord;
+  isChecked: boolean;
   movePiece: () => void;
 }
 
