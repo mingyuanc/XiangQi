@@ -1,20 +1,46 @@
 import { useState } from "react";
 import Box from "./Box.js";
 import findMoves from "./util";
-import { IBoard, Coord } from "./types.js";
+import { IBoard, Coord, Piece, State } from "./types.js";
 
-function Board({ state, redTurn, toggleTurn }: IBoard) {
+function calMoves(
+  pieces: Piece[],
+  state: State
+): Map<Piece, Array<Array<number>>> {
+  const moves = new Map<Piece, Array<Array<number>>>();
+  pieces.map((piece) => moves.set(piece, findMoves(state, piece)));
+  return moves;
+}
+const moveables: () => boolean[][] = () =>
+  Array(10)
+    .fill(null)
+    .map(() => Array(9).fill(false));
+
+function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
   // TODO: make sure piece move is correct color
   const negCoord: Coord = { row: -1, col: -1 };
   const [moving, setMoving] = useState({ row: -1, col: -1 });
   const [moveable, setMovable] = useState(Array(10).fill(Array(9).fill(false)));
+  const [posMoveRed, setPosMoveRed] = useState(calMoves(redPieces, state));
+  const [posMoveBlack, setPosMoveBlack] = useState(
+    calMoves(blackPieces, state)
+  );
   function movePiece(row: number, col: number) {
+    // if havent move
     if (moving.row == -1) {
-      const posMoves = findMoves(state, state[row][col]!);
+      //  type casting is safe as only pieces are clickable if havent move
+      const currPiece: Piece = state[row][col] as Piece;
+      const moves = redTurn
+        ? posMoveRed.get(currPiece)
+        : posMoveBlack.get(currPiece);
+      const posMoves: boolean[][] = moveables();
+      moves!.map((move) => (posMoves[move[0]][move[1]] = true));
       setMovable(posMoves);
       setMoving({ row: row, col: col });
       return;
     }
+    // if have moved
+
     const currPiece = state[row][col];
     // movPiece isnt null, checked in first if statement
     const movPiece = state[moving.row][moving.col];
@@ -28,19 +54,27 @@ function Board({ state, redTurn, toggleTurn }: IBoard) {
 
     // to view move of another tile of same team
     if (currPiece && movPiece!.team == currPiece.team) {
-      const posMoves = findMoves(state, state[row][col]!);
+      const moves = redTurn
+        ? posMoveRed.get(currPiece)
+        : posMoveBlack.get(currPiece);
+      const posMoves: boolean[][] = moveables();
+      moves!.map((move) => (posMoves[move[0]][move[1]] = true));
       setMovable(posMoves);
       setMoving({ row: row, col: col });
       return;
     }
 
+    // to move to position
     const newState = state.map((arr) => arr.slice());
     newState[row][col] = movPiece;
     newState[moving.row][moving.col] = null;
     movPiece!.row = row;
     movPiece!.col = col;
-    toggleTurn(newState);
+    toggleTurn(newState, currPiece);
     setMoving(negCoord);
+    setMovable(Array(10).fill(Array(9).fill(false)));
+    setPosMoveRed(calMoves(redPieces, newState));
+    setPosMoveBlack(calMoves(blackPieces, newState));
   }
   const tmp = [...Array(9).keys()];
   return (

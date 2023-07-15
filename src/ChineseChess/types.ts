@@ -15,6 +15,7 @@ export enum Team {
 }
 
 export interface Piece {
+  id: string;
   type: Unit;
   img: String;
   team: Team;
@@ -38,5 +39,7 @@ export interface IBox {
 export interface IBoard {
   state: State;
   redTurn: boolean;
-  toggleTurn: (state: State) => void;
+  redPieces: Piece[];
+  blackPieces: Piece[];
+  toggleTurn: (state: State, piece: NPiece) => void;
 }

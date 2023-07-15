@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import Board from "./Board.js";
 import starting from "./starting.js";
 import "./ChineseChess.css";
-import { State } from "./types.js";
-
-// TODO: find avail move and set isMoveable
+import { State, Team, Piece, NPiece } from "./types.js";
 
 function updateDiemsions() {
   let mult = 0.7;
@@ -22,17 +20,32 @@ function updateDiemsions() {
   };
 }
 
+function startingPieces(isRed: boolean): Piece[] {
+  // casting is safe as i checked for nullity
+  return starting.flatMap((row) =>
+    row.filter((piece) => piece?.team === (isRed ? Team.red : Team.black))
+  ) as Piece[];
+}
+
 function ChineseChess() {
   const [history, setHistory] = useState([starting]);
   const [redTurn, setRedTurn] = useState(true);
+  const [redPieces, setRedPieces] = useState(startingPieces(true));
+  const [blackPieces, setBlackPieces] = useState(startingPieces(false));
   // to size the board correctly
   const [dimensions, setDimensions] = useState(updateDiemsions());
   const currState = history[history.length - 1];
-  const nextTurn = (state: State) => {
+  const nextTurn = (state: State, piece: NPiece) => {
+    if (piece != null) {
+      piece.team === Team.red
+        ? setRedPieces((arr) => arr.filter((p) => p.id != piece.id))
+        : setBlackPieces((arr) => arr.filter((p) => p.id != piece.id));
+    }
     setHistory((hist) => [...hist, state]);
     setRedTurn((x) => !x);
   };
 
+  // for responsive design
   useEffect(() => {
     function handleResize() {
       setDimensions(updateDiemsions());
@@ -62,7 +75,13 @@ function ChineseChess() {
         {redTurn ? "Red" : "Black"}'s turn
       </h1>
       <div className="game-container" style={reactive}>
-        <Board state={currState} redTurn={redTurn} toggleTurn={nextTurn} />
+        <Board
+          state={currState}
+          redTurn={redTurn}
+          redPieces={redPieces}
+          blackPieces={blackPieces}
+          toggleTurn={nextTurn}
+        />
       </div>
     </main>
   );

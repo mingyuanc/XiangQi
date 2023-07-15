@@ -1,9 +1,4 @@
-import { Coord, Piece, State, Team } from "./types";
-
-const moveables = () =>
-  Array(10)
-    .fill(null)
-    .map((x) => Array(9).fill(false));
+import { Piece, State, Team } from "./types";
 
 const arrayRange = (start: number, end: number) =>
   [...Array(end - start + 1).keys()].map((i) => i + start);
@@ -21,7 +16,7 @@ const isValid = (state: State, team: Team, row: number, col: number) => {
   return true;
 };
 
-function findMoveChariot(state: State, piece: Piece, moves: boolean[][]) {
+function findMoveChariot(state: State, piece: Piece): Array<Array<Number>> {
   const r: Piece[] = [],
     c: Piece[] = [];
   for (let row = 0; row < state.length; row++) {
@@ -38,6 +33,7 @@ function findMoveChariot(state: State, piece: Piece, moves: boolean[][]) {
       }
     }
   }
+  const moves: Array<Array<Number>> = [];
   function helper(isRow: boolean, arr: Piece[], idx: number) {
     const axis = isRow ? piece.row : piece.col;
     const [start, end] = [idx - 1, idx + 1].map((x) => {
@@ -57,9 +53,9 @@ function findMoveChariot(state: State, piece: Piece, moves: boolean[][]) {
     }
     arrayRange(start, end).map((b) => {
       if (isRow) {
-        moves[axis][b] = true;
+        moves.push([axis, b]);
       } else {
-        moves[b][axis] = true;
+        moves.push([b, axis]);
       }
     });
   }
@@ -69,7 +65,7 @@ function findMoveChariot(state: State, piece: Piece, moves: boolean[][]) {
   return moves;
 }
 
-function findMoveHorse(state: State, piece: Piece, moves: boolean[][]) {
+function findMoveHorse(state: State, piece: Piece): Array<Array<Number>> {
   const row = piece.row,
     col = piece.col;
   const posMoves = [
@@ -78,7 +74,7 @@ function findMoveHorse(state: State, piece: Piece, moves: boolean[][]) {
     [row + 1, col],
     [row - 1, col],
   ];
-  posMoves
+  return posMoves
     .filter((move) => {
       if (move[0] < 0 || move[0] > 9) {
         return false;
@@ -107,12 +103,10 @@ function findMoveHorse(state: State, piece: Piece, moves: boolean[][]) {
         [move[0] + add, col + 1],
       ];
     })
-    .filter((move) => isValid(state, piece.team, move[0], move[1]))
-    .map((move) => (moves[move[0]][move[1]] = true));
-  return moves;
+    .filter((move) => isValid(state, piece.team, move[0], move[1]));
 }
 
-function findMoveElephant(state: State, piece: Piece, moves: boolean[][]) {
+function findMoveElephant(state: State, piece: Piece): Array<Array<Number>> {
   const row = piece.row,
     col = piece.col;
 
@@ -122,22 +116,22 @@ function findMoveElephant(state: State, piece: Piece, moves: boolean[][]) {
     [row + 2, col - 2],
     [row + 2, col + 2],
   ];
-  posMoves
-    // check if accross river
-    .filter((move) => (piece.team == "red" ? move[0] < 5 : move[0] > 4))
-    // check if move is on board and has no friendly troop
-    .filter((move) => isValid(state, piece.team, move[0], move[1]))
-    // check if its blocked
-    .filter(
-      (move) =>
-        state[Math.abs((move[0] + row) / 2)][Math.abs((move[1] + col) / 2)] ==
-        null
-    )
-    .map((move) => (moves[move[0]][move[1]] = true));
-  return moves;
+  return (
+    posMoves
+      // check if accross river
+      .filter((move) => (piece.team == "red" ? move[0] < 5 : move[0] > 4))
+      // check if move is on board and has no friendly troop
+      .filter((move) => isValid(state, piece.team, move[0], move[1]))
+      // check if its blocked
+      .filter(
+        (move) =>
+          state[Math.abs((move[0] + row) / 2)][Math.abs((move[1] + col) / 2)] ==
+          null
+      )
+  );
 }
 
-function findMoveAdvisor(state: State, piece: Piece, moves: boolean[][]) {
+function findMoveAdvisor(state: State, piece: Piece): Array<Array<Number>> {
   const row = piece.row,
     col = piece.col;
 
@@ -157,18 +151,18 @@ function findMoveAdvisor(state: State, piece: Piece, moves: boolean[][]) {
           [7, 3],
           [7, 5],
         ];
-  posMoves
-    // check if moveable
-    .filter(
-      (move) => Math.abs(move[0] - row) == 1 || Math.abs(move[0]) - col == 1
-    )
-    // check if move is on board and has no friendly troop
-    .filter((move) => isValid(state, piece.team, move[0], move[1]))
-    .map((move) => (moves[move[0]][move[1]] = true));
-  return moves;
+  return (
+    posMoves
+      // check if moveable
+      .filter(
+        (move) => Math.abs(move[0] - row) == 1 || Math.abs(move[1] - col) == 1
+      )
+      // check if move is on board and has no friendly troop
+      .filter((move) => isValid(state, piece.team, move[0], move[1]))
+  );
 }
 
-function findMoveCannon(state: State, piece: Piece, moves: boolean[][]) {
+function findMoveCannon(state: State, piece: Piece): Array<Array<Number>> {
   const r: Piece[] = [],
     c: Piece[] = [];
   for (let row = 0; row < state.length; row++) {
@@ -185,6 +179,7 @@ function findMoveCannon(state: State, piece: Piece, moves: boolean[][]) {
       }
     }
   }
+  const moves: Array<Array<Number>> = [];
   function helper(isRow: boolean, arr: Piece[], idx: number) {
     [idx - 2, idx + 2].map((i) => {
       if (i < 0 || i > arr.length - 1) {
@@ -194,7 +189,7 @@ function findMoveCannon(state: State, piece: Piece, moves: boolean[][]) {
         return;
       }
       const target = arr[i];
-      moves[target.row][target.col] = true;
+      moves.push([target.row, target.col]);
     });
     const [start, end] = [idx - 1, idx + 1].map((i) => {
       if (i < 0 || i > arr.length - 1) {
@@ -211,9 +206,9 @@ function findMoveCannon(state: State, piece: Piece, moves: boolean[][]) {
     const axis = isRow ? piece.row : piece.col;
     arrayRange(start, end).map((b) => {
       if (isRow) {
-        moves[axis][b] = true;
+        moves.push([axis, b]);
       } else {
-        moves[b][axis] = true;
+        moves.push([b, axis]);
       }
     });
   }
@@ -222,20 +217,20 @@ function findMoveCannon(state: State, piece: Piece, moves: boolean[][]) {
   return moves;
 }
 
-function findMoveSoldier(state: State, piece: Piece, moves: boolean[][]) {
+function findMoveSoldier(state: State, piece: Piece): Array<Array<Number>> {
   const row = piece.row,
     col = piece.col;
   const posMoves = [piece.team == "red" ? [row + 1, col] : [row - 1, col]];
   if (piece.team == "red" ? row > 4 : row < 5) {
     posMoves.push([row, col + 1], [row, col - 1]);
   }
-  posMoves
-    .filter((move) => isValid(state, piece.team, move[0], move[1]))
-    .map((move) => (moves[move[0]][move[1]] = true));
-  return moves;
+  return posMoves.filter((move) =>
+    isValid(state, piece.team, move[0], move[1])
+  );
 }
 
-function findMoveGeneral(state: State, piece: Piece, moves: boolean[][]) {
+function findMoveGeneral(state: State, piece: Piece): Array<Array<Number>> {
+  // TODO
   const row = piece.row,
     col = piece.col;
   const posMoves = [
@@ -244,42 +239,37 @@ function findMoveGeneral(state: State, piece: Piece, moves: boolean[][]) {
     [row + 1, col],
     [row - 1, col],
   ];
-  posMoves
-    .filter((move) => {
-      if (move[1] < 3 || move[1] > 5) {
-        return false;
-      }
-      const [lower, upper] = piece.team == "red" ? [0, 2] : [7, 9];
-      if (move[0] < lower || move[0] > upper) {
-        return false;
-      }
-      if (state[move[0]][move[1]]?.team == piece.team) {
-        return false;
-      }
-      return true;
-    })
-    .map((move) => (moves[move[0]][move[1]] = true));
-  return moves;
+  return posMoves.filter((move) => {
+    if (move[1] < 3 || move[1] > 5) {
+      return false;
+    }
+    const [lower, upper] = piece.team == "red" ? [0, 2] : [7, 9];
+    if (move[0] < lower || move[0] > upper) {
+      return false;
+    }
+    if (state[move[0]][move[1]]?.team == piece.team) {
+      return false;
+    }
+    return true;
+  });
 }
 
 function findMove(state: State, piece: Piece) {
-  const moves = moveables();
-
   switch (piece.type) {
     case "Chariot":
-      return findMoveChariot(state, piece, moves);
+      return findMoveChariot(state, piece);
     case "Horse":
-      return findMoveHorse(state, piece, moves);
+      return findMoveHorse(state, piece);
     case "Elephant":
-      return findMoveElephant(state, piece, moves);
+      return findMoveElephant(state, piece);
     case "Advisor":
-      return findMoveAdvisor(state, piece, moves);
+      return findMoveAdvisor(state, piece);
     case "Cannon":
-      return findMoveCannon(state, piece, moves);
+      return findMoveCannon(state, piece);
     case "Soldier":
-      return findMoveSoldier(state, piece, moves);
+      return findMoveSoldier(state, piece);
     case "General":
-      return findMoveGeneral(state, piece, moves);
+      return findMoveGeneral(state, piece);
     default:
       return Array(10)
         .fill(null)
