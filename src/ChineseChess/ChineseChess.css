@@ -73,9 +73,10 @@
 }
 
 .game-moves {
+  color: white;
   text-align: center;
   padding: 20px 0px;
-  background-color: #eeeeee;
+  background-color: #023e8a;
 }
 
 .game-row,
