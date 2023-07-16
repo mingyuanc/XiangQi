@@ -3,7 +3,7 @@ import { NPiece, Team } from "./types";
 let data: NPiece[][] = [
   [
     {
-      id: "leftChariot",
+      id: "Left Chariot",
       type: "Chariot",
       img: "車",
       team: Team.red,
@@ -11,7 +11,7 @@ let data: NPiece[][] = [
       col: 0,
     },
     {
-      id: "leftHorse",
+      id: "Left Horse",
       type: "Horse",
       img: "馬",
       team: Team.red,
@@ -19,7 +19,7 @@ let data: NPiece[][] = [
       col: 1,
     },
     {
-      id: "leftElephant",
+      id: "Left Elephant",
       type: "Elephant",
       img: "相",
       team: Team.red,
@@ -27,7 +27,7 @@ let data: NPiece[][] = [
       col: 2,
     },
     {
-      id: "leftAdvisor",
+      id: "Left Advisor",
       type: "Advisor",
       img: "仕",
       team: Team.red,
@@ -35,7 +35,7 @@ let data: NPiece[][] = [
       col: 3,
     },
     {
-      id: "general",
+      id: "General",
       type: "General",
       img: "帥",
       team: Team.red,
@@ -43,7 +43,7 @@ let data: NPiece[][] = [
       col: 4,
     },
     {
-      id: "rightAdvisor",
+      id: "Right Advisor",
       type: "Advisor",
       img: "仕",
       team: Team.red,
@@ -51,7 +51,7 @@ let data: NPiece[][] = [
       col: 5,
     },
     {
-      id: "rightElephant",
+      id: "Right Elephant",
       type: "Elephant",
       img: "相",
       team: Team.red,
@@ -59,7 +59,7 @@ let data: NPiece[][] = [
       col: 6,
     },
     {
-      id: "rightHorse",
+      id: "Right Horse",
       type: "Horse",
       img: "馬",
       team: Team.red,
@@ -67,7 +67,7 @@ let data: NPiece[][] = [
       col: 7,
     },
     {
-      id: "rightChariot",
+      id: "Right Chariot",
       type: "Chariot",
       img: "車",
       team: Team.red,
@@ -79,7 +79,7 @@ let data: NPiece[][] = [
   [
     null,
     {
-      id: "leftCannon",
+      id: "Left Cannon",
       type: "Cannon",
       img: "炮",
       team: Team.red,
@@ -92,7 +92,7 @@ let data: NPiece[][] = [
     null,
     null,
     {
-      id: "rightCannon",
+      id: "Right Cannon",
       type: "Cannon",
       img: "炮",
       team: Team.red,
@@ -103,7 +103,7 @@ let data: NPiece[][] = [
   ],
   [
     {
-      id: "Soldier1",
+      id: "Soldier #1",
       type: "Soldier",
       img: "兵",
       team: Team.red,
@@ -112,7 +112,7 @@ let data: NPiece[][] = [
     },
     null,
     {
-      id: "Soldier2",
+      id: "Soldier #2",
       type: "Soldier",
       img: "兵",
       team: Team.red,
@@ -121,7 +121,7 @@ let data: NPiece[][] = [
     },
     null,
     {
-      id: "Soldier3",
+      id: "Soldier #3",
       type: "Soldier",
       img: "兵",
       team: Team.red,
@@ -130,7 +130,7 @@ let data: NPiece[][] = [
     },
     null,
     {
-      id: "Soldier4",
+      id: "Soldier #4",
       type: "Soldier",
       img: "兵",
       team: Team.red,
@@ -139,7 +139,7 @@ let data: NPiece[][] = [
     },
     null,
     {
-      id: "Soldier5",
+      id: "Soldier #5",
       type: "Soldier",
       img: "兵",
       team: Team.red,
@@ -151,7 +151,7 @@ let data: NPiece[][] = [
   Array(9).fill(null),
   [
     {
-      id: "Soldier5",
+      id: "Soldier #5",
       type: "Soldier",
       img: "卒",
       team: Team.black,
@@ -160,7 +160,7 @@ let data: NPiece[][] = [
     },
     null,
     {
-      id: "Soldier4",
+      id: "Soldier #4",
       type: "Soldier",
       img: "卒",
       team: Team.black,
@@ -169,7 +169,7 @@ let data: NPiece[][] = [
     },
     null,
     {
-      id: "Soldier3",
+      id: "Soldier #3",
       type: "Soldier",
       img: "卒",
       team: Team.black,
@@ -178,7 +178,7 @@ let data: NPiece[][] = [
     },
     null,
     {
-      id: "Soldier2",
+      id: "Soldier #2",
       type: "Soldier",
       img: "卒",
       team: Team.black,
@@ -187,7 +187,7 @@ let data: NPiece[][] = [
     },
     null,
     {
-      id: "Soldier1",
+      id: "Soldier #1",
       type: "Soldier",
       img: "卒",
       team: Team.black,
@@ -198,7 +198,7 @@ let data: NPiece[][] = [
   [
     null,
     {
-      id: "rightCannon",
+      id: "Right Cannon",
       type: "Cannon",
       img: "炮",
       team: Team.black,
@@ -211,7 +211,7 @@ let data: NPiece[][] = [
     null,
     null,
     {
-      id: "leftCannon",
+      id: "Left Cannon",
       type: "Cannon",
       img: "炮",
       team: Team.black,
@@ -223,7 +223,7 @@ let data: NPiece[][] = [
   Array(9).fill(null),
   [
     {
-      id: "rightChariot",
+      id: "Right Chariot",
       type: "Chariot",
       img: "車",
       team: Team.black,
@@ -231,7 +231,7 @@ let data: NPiece[][] = [
       col: 0,
     },
     {
-      id: "rightHorse",
+      id: "Right Horse",
       type: "Horse",
       img: "馬",
       team: Team.black,
@@ -239,7 +239,7 @@ let data: NPiece[][] = [
       col: 1,
     },
     {
-      id: "rightElephant",
+      id: "Right Elephant",
       type: "Elephant",
       img: "象",
       team: Team.black,
@@ -247,7 +247,7 @@ let data: NPiece[][] = [
       col: 2,
     },
     {
-      id: "rightAdvisor",
+      id: "Right Advisor",
       type: "Advisor",
       img: "士",
       team: Team.black,
@@ -255,7 +255,7 @@ let data: NPiece[][] = [
       col: 3,
     },
     {
-      id: "general",
+      id: "General",
       type: "General",
       img: "將",
       team: Team.black,
@@ -263,7 +263,7 @@ let data: NPiece[][] = [
       col: 4,
     },
     {
-      id: "leftAdvisor",
+      id: "Left Advisor",
       type: "Advisor",
       img: "士",
       team: Team.black,
@@ -271,7 +271,7 @@ let data: NPiece[][] = [
       col: 5,
     },
     {
-      id: "leftElephant",
+      id: "Left Elephant",
       type: "Elephant",
       img: "象",
       team: Team.black,
@@ -279,7 +279,7 @@ let data: NPiece[][] = [
       col: 6,
     },
     {
-      id: "leftHorse",
+      id: "Left Horse",
       type: "Horse",
       img: "馬",
       team: Team.black,
@@ -287,7 +287,7 @@ let data: NPiece[][] = [
       col: 7,
     },
     {
-      id: "leftChariot",
+      id: "Left Chariot",
       type: "Chariot",
       img: "車",
       team: Team.black,

@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   position: relative;
-  background-color: #aea3b0;
+  background-color: #87ceeb;
   color: white;
   box-shadow: 0 2px 2px 2px rgba(9, 9, 9, 0.23);
 }
@@ -35,7 +35,7 @@
   transition: 0.5s ease;
 }
 .nav-menu li:hover {
-  background-color: #e3d0d8;
+  background-color: #a4dded;
   cursor: pointer;
 }
 .hamburger {
@@ -44,7 +44,7 @@
   width: 40px;
   padding: 0.5rem;
   border-radius: 50%;
-  background-color: #283b8b;
+  background-color: #4682b4;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
   position: absolute;
@@ -55,7 +55,7 @@
 }
 
 .hamburger:hover {
-  background-color: #2642af;
+  background-color: #2774ae;
 }
 
 @media screen and (max-width: 768px) {

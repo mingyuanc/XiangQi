@@ -16,6 +16,7 @@ function calMoves(
   state: State,
   otherTeam: Piece[]
 ): Map<Piece, Array<Array<number>>> {
+  console.log("calMoves");
   const moves = new Map<Piece, Array<Array<number>>>();
   pieces.map((piece) =>
     moves.set(piece, findMoves(state, piece, pieces, otherTeam))
@@ -59,19 +60,21 @@ const moveables: () => boolean[][] = () =>
     .fill(null)
     .map(() => Array(9).fill(false));
 
-function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
+function Board({
+  state,
+  won,
+  setWon,
+  redTurn,
+  redPieces,
+  blackPieces,
+  toggleTurn,
+}: IBoard) {
   const negCoord: Coord = { row: -1, col: -1 };
   const [moving, setMoving] = useState({ row: -1, col: -1 });
   const [moveable, setMovable] = useState(Array(10).fill(Array(9).fill(false)));
   // TODO a possible hint button
-  const [posMoveRed, setPosMoveRed] = useState(() =>
-    calMoves(redPieces, state, blackPieces)
-  );
-  const [posMoveBlack, setPosMoveBlack] = useState(() =>
-    calMoves(blackPieces, state, redPieces)
-  );
-
-  const [won, setWon] = useState(false);
+  let posMoveRed = calMoves(redPieces, state, blackPieces);
+  let posMoveBlack = calMoves(blackPieces, state, redPieces);
 
   // --- checking for checks ---
   const redGeneral = redPieces.find((x) => x.type == "General")!;
@@ -80,20 +83,18 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
   const _isChecked = redTurn
     ? isChecked(redGeneral, posMoveBlack)
     : isChecked(blackGeneral, posMoveRed);
-  // --- checking for win ---
 
   if (
-    !won &&
+    _isChecked &&
     hasWon(
       !redTurn ? blackGeneral : redGeneral,
       !redTurn ? posMoveBlack : posMoveRed,
       !redTurn ? posMoveRed : posMoveBlack
     )
   ) {
-    alert(`${!redTurn ? "red" : "black"} has won!!!`);
     setWon(true);
-    setMovable(Array(10).fill(Array(9).fill(false)));
   }
+  // --- checking for win ---
 
   /**
    *  Processes the piece being moved
@@ -101,6 +102,7 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
    *  @param {number} col the column of the box being clicked
    */
   function movePiece(row: number, col: number) {
+    console.log("moving", row, col);
     if (won) {
       return;
     }
@@ -145,15 +147,11 @@ function Board({ state, redTurn, redPieces, blackPieces, toggleTurn }: IBoard) {
     }
     // to move to position
     const newState = state.map((arr) => arr.slice());
-    newState[row][col] = movPiece;
+    newState[row][col] = { ...movPiece!, row: row, col: col };
     newState[moving.row][moving.col] = null;
-    movPiece!.row = row;
-    movPiece!.col = col;
-    toggleTurn(newState, currPiece);
+    toggleTurn(newState, { row: row, col: col });
     setMoving(negCoord);
     setMovable(Array(10).fill(Array(9).fill(false)));
-    setPosMoveRed(calMoves(redPieces, newState, blackPieces));
-    setPosMoveBlack(calMoves(blackPieces, newState, redPieces));
   }
   const tmp = [...Array(9).keys()];
   return (

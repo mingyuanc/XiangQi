@@ -46,18 +46,19 @@ function causeCheck(
   ownTeam: Piece[],
   otherTeam: Piece[]
 ): boolean {
+  console.log(piece, move, state);
   const newState = state.map((arr) => arr.slice());
   newState[piece.row][piece.col] = null;
   otherTeam = otherTeam.filter((x) => x != newState[move[0]][move[1]]);
-  newState[move[0]][move[1]] = piece;
-  const r = piece.row,
-    c = piece.col;
-  piece.row = move[0];
-  piece.col = move[1];
+  newState[move[0]][move[1]] = { ...piece, row: move[0], col: move[1] };
+  console.log(newState);
   // assertion is safe as ownTeam will always have a general
-  const general: Piece = ownTeam.find((x) => x.type == "General") as Piece;
+  let general: Piece = ownTeam.find((x) => x.type == "General") as Piece;
   if (general === undefined) {
     throw ErrorEvent;
+  }
+  if (piece.type == "General") {
+    general = newState[move[0]][move[1]]!;
   }
 
   const targetPices = ["Elephant", "Advisor"];
@@ -74,6 +75,7 @@ function causeCheck(
           (move) => move[0] == general.row && move[1] == general.col
         );
         if (!outcome) {
+          console.log("solider");
         }
         break;
       case "Chariot":
@@ -81,6 +83,7 @@ function causeCheck(
           (move) => move[0] == general.row && move[1] == general.col
         );
         if (!outcome) {
+          console.log("charioit");
         }
         break;
       case "Horse":
@@ -88,6 +91,7 @@ function causeCheck(
           (move) => move[0] == general.row && move[1] == general.col
         );
         if (!outcome) {
+          console.log("hourse");
         }
         break;
       case "Cannon":
@@ -95,6 +99,7 @@ function causeCheck(
           (move) => move[0] == general.row && move[1] == general.col
         );
         if (!outcome) {
+          console.log("cannon");
         }
         break;
       case "General":
@@ -105,19 +110,21 @@ function causeCheck(
             Math.max(general.row, p.row)
           ).filter((r) => newState[r][p.col]).length == 2
         ) {
+          console.log("general");
           outcome = false;
         }
         break;
+      default:
+        console.log("default");
     }
 
     if (!outcome) {
-      piece.row = r;
-      piece.col = c;
+      console.log(outcome);
       return outcome;
     }
   }
-  piece.row = r;
-  piece.col = c;
+  console.log(true);
+
   return true;
 }
 
@@ -335,7 +342,7 @@ function findMoveCannon(state: State, piece: Piece): Array<Array<number>> {
     const [start, end] = [idx - 1, idx + 1].map((i) => {
       if (i < 0 || i > arr.length - 1) {
         // if no piece between piece and border
-        return i < idx ? 0 : isRow ? 10 : 9;
+        return i < idx ? 0 : isRow ? 8 : 9;
       } else {
         const add = i < idx ? 1 : -1;
         return isRow ? arr[i].col + add : arr[i].row + add;

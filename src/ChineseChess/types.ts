@@ -41,8 +41,10 @@ export interface IBox {
 
 export interface IBoard {
   state: State;
+  won: boolean;
+  setWon: Function;
   redTurn: boolean;
   redPieces: Piece[];
   blackPieces: Piece[];
-  toggleTurn: (state: State, piece: NPiece) => void;
+  toggleTurn: (state: State, move: Coord) => void;
 }
