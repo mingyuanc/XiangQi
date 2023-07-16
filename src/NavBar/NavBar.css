@@ -63,6 +63,7 @@
     display: block;
   }
   .nav-menu ul {
+    z-index: 999;
     position: absolute;
     top: 60px;
     left: 0;
