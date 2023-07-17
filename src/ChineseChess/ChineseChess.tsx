@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import Board from "./Board.js";
-import starting from "./starting.js";
+import starting from "./Starting.js";
 import "./ChineseChess.css";
-import { State, Team, Piece, NPiece, Coord } from "./types.js";
+import { State, Team, Piece, Coord } from "./types.js";
 import Confetti from "react-confetti";
 
 function updateDiemsions() {
@@ -32,6 +32,9 @@ function ChineseChess() {
   const [history, setHistory] = useState([
     { state: starting, move: { row: -1, col: -1 } },
   ]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const [won, setWon] = useState(false);
+  const [dimensions, setDimensions] = useState(updateDiemsions());
 
   // --- for the undoing of moves ---
   const moves = history.map(({ state, move }, num) => {
@@ -60,22 +63,15 @@ function ChineseChess() {
     );
   });
 
-  const [currentMove, setCurrentMove] = useState(0);
   const redTurn: boolean = currentMove % 2 === 0;
-  const [won, setWon] = useState(false);
-  // to size the board correctly
-  const [dimensions, setDimensions] = useState(updateDiemsions());
   const currState = history[currentMove].state;
-  console.log(currState);
   const redPieces: Piece[] = currState.flatMap((row) =>
     row.filter((piece) => piece?.team === Team.red)
   ) as Piece[];
   const blackPieces: Piece[] = currState.flatMap((row) =>
     row.filter((piece) => piece?.team === Team.black)
   ) as Piece[];
-  console.log(redPieces, blackPieces);
   const nextTurn = (state: State, move: Coord) => {
-    console.log("nextturn", state);
     setHistory((hist) => [
       ...hist.slice(0, currentMove + 1),
       { state: state, move: move },

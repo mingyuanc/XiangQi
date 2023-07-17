@@ -46,12 +46,11 @@ function causeCheck(
   ownTeam: Piece[],
   otherTeam: Piece[]
 ): boolean {
-  console.log(piece, move, state);
   const newState = state.map((arr) => arr.slice());
+
   newState[piece.row][piece.col] = null;
   otherTeam = otherTeam.filter((x) => x != newState[move[0]][move[1]]);
   newState[move[0]][move[1]] = { ...piece, row: move[0], col: move[1] };
-  console.log(newState);
   // assertion is safe as ownTeam will always have a general
   let general: Piece = ownTeam.find((x) => x.type == "General") as Piece;
   if (general === undefined) {
@@ -74,33 +73,21 @@ function causeCheck(
         outcome = !findMoveSoldier(newState, p).find(
           (move) => move[0] == general.row && move[1] == general.col
         );
-        if (!outcome) {
-          console.log("solider");
-        }
         break;
       case "Chariot":
         outcome = !findMoveChariot(newState, p).find(
           (move) => move[0] == general.row && move[1] == general.col
         );
-        if (!outcome) {
-          console.log("charioit");
-        }
         break;
       case "Horse":
         outcome = !findMoveHorse(newState, p).find(
           (move) => move[0] == general.row && move[1] == general.col
         );
-        if (!outcome) {
-          console.log("hourse");
-        }
         break;
       case "Cannon":
         outcome = !findMoveCannon(newState, p).find(
           (move) => move[0] == general.row && move[1] == general.col
         );
-        if (!outcome) {
-          console.log("cannon");
-        }
         break;
       case "General":
         if (
@@ -110,21 +97,15 @@ function causeCheck(
             Math.max(general.row, p.row)
           ).filter((r) => newState[r][p.col]).length == 2
         ) {
-          console.log("general");
           outcome = false;
         }
         break;
-      default:
-        console.log("default");
     }
 
     if (!outcome) {
-      console.log(outcome);
       return outcome;
     }
   }
-  console.log(true);
-
   return true;
 }
 

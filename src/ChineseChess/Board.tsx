@@ -16,7 +16,6 @@ function calMoves(
   state: State,
   otherTeam: Piece[]
 ): Map<Piece, Array<Array<number>>> {
-  console.log("calMoves");
   const moves = new Map<Piece, Array<Array<number>>>();
   pieces.map((piece) =>
     moves.set(piece, findMoves(state, piece, pieces, otherTeam))
@@ -72,7 +71,7 @@ function Board({
   const negCoord: Coord = { row: -1, col: -1 };
   const [moving, setMoving] = useState({ row: -1, col: -1 });
   const [moveable, setMovable] = useState(Array(10).fill(Array(9).fill(false)));
-  // TODO a possible hint button
+
   let posMoveRed = calMoves(redPieces, state, blackPieces);
   let posMoveBlack = calMoves(blackPieces, state, redPieces);
 
@@ -102,7 +101,6 @@ function Board({
    *  @param {number} col the column of the box being clicked
    */
   function movePiece(row: number, col: number) {
-    console.log("moving", row, col);
     if (won) {
       return;
     }
