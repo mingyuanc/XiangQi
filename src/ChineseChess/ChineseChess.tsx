@@ -109,7 +109,7 @@ function ChineseChess() {
         {won && <Confetti />}
         <div className="game-board">
           <h1 className="game-turn">
-            {`Turn Number: ${currentMove}, `}
+            {`Turn ${currentMove}, `}
             {won
               ? redTurn
                 ? "Black has won!"
