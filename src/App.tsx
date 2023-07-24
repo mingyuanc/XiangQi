@@ -7,13 +7,13 @@ function App() {
     <>
       <NavBar
         scrollToAbout={() =>
-          window.location.assign("https://mingyuanc.github.io/#about")
+          window.location.assign("https://mingyuanc.github.io#about")
         }
         scrollToProjects={() =>
-          window.location.assign("https://mingyuanc.github.io/#project")
+          window.location.assign("https://mingyuanc.github.io#project")
         }
         scrollToExps={() =>
-          window.location.assign("https://mingyuanc.github.io/#experience")
+          window.location.assign("https://mingyuanc.github.io#experience")
         }
         scrollToSkills={() =>
           window.location.assign("https://mingyuanc.github.io/#skill")
