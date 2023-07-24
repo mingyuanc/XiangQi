@@ -27,7 +27,7 @@ const isChecked: (Piece: Piece, posMoves: Map<Piece, number[][]>) => boolean = (
   piece,
   posMoves
 ) => {
-  for (let [key, value] of posMoves) {
+  for (let [_, value] of posMoves) {
     for (let arr of value) {
       if (arr[0] == piece.row && arr[1] == piece.col) {
         return true;
@@ -42,7 +42,7 @@ const hasWon = (
   posMoveOwn: Map<Piece, number[][]>,
   posMovesOppo: Map<Piece, number[][]>
 ) => {
-  for (let [key, value] of posMoveOwn) {
+  for (let [_, value] of posMoveOwn) {
     if (value.length != 0) {
       return false;
     }

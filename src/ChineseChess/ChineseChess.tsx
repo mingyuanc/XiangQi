@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Board from "./Board.js";
-import starting from "./Starting.js";
+import starting from "./Starting";
 import "./ChineseChess.css";
 import { State, Team, Piece, Coord, NPiece } from "./types.js";
 import Confetti from "react-confetti";

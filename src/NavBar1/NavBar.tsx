@@ -1,28 +1,14 @@
 import { useState } from "react";
 import styles from "./NavBar.module.css";
+import logo from "../assets/favicon-32x32.png";
 
-interface NavBarProps {
-  scrollToAbout: () => void;
-  scrollToProjects: () => void;
-  scrollToExps: () => void;
-  scrollToSkills: () => void;
-  scrollToContact: () => void;
-}
-
-function NavBar({
-  scrollToAbout,
-  scrollToProjects,
-  scrollToExps,
-  scrollToSkills,
-  scrollToContact,
-}: NavBarProps) {
+function NavBar() {
   const [isNavExpanded, setIsNavExpanded] = useState(false);
   return (
     <nav className={styles.navbar}>
-      {/* <img className={styles["navbar-logo"]} src={logo} alt="Logo" /> */}
+      <img className={styles["navbar-logo"]} src={logo} alt="Logo" />
       <h1 className={styles["navbar-brand"]}>Ming Yuan</h1>
       <button
-        about="Nav menu tray"
         className={styles.hamburger}
         onClick={() => {
           setIsNavExpanded(!isNavExpanded);
@@ -50,11 +36,10 @@ function NavBar({
         }
       >
         <ul>
-          <li onClick={scrollToAbout}>About</li>
-          <li onClick={scrollToProjects}>Projects</li>
-          <li onClick={scrollToExps}>Experiences</li>
-          <li onClick={scrollToSkills}>Skill</li>
-          <li onClick={scrollToContact}>Contact</li>
+          <li>About</li>
+          <li>Projects</li>
+          <li>Experiences</li>
+          <li>Skill</li>
         </ul>
       </div>
     </nav>
