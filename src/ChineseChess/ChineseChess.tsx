@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Board from "./Board.js";
 import starting from "./Starting.js";
 import "./ChineseChess.css";
-import { State, Team, Piece, Coord } from "./types.js";
+import { State, Team, Piece, Coord, NPiece } from "./types.js";
 import Confetti from "react-confetti";
 
 function updateDiemsions() {
@@ -19,13 +19,6 @@ function updateDiemsions() {
     width: width,
     height: (width / 9) * 10,
   };
-}
-
-function startingPieces(isRed: boolean): Piece[] {
-  // casting is safe as i checked for nullity
-  return starting.flatMap((row) =>
-    row.filter((piece) => piece?.team === (isRed ? Team.red : Team.black))
-  ) as Piece[];
 }
 
 function ChineseChess() {
@@ -65,11 +58,11 @@ function ChineseChess() {
 
   const redTurn: boolean = currentMove % 2 === 0;
   const currState = history[currentMove].state;
-  const redPieces: Piece[] = currState.flatMap((row) =>
-    row.filter((piece) => piece?.team === Team.red)
+  const redPieces: Piece[] = currState.flatMap((row: NPiece[]): NPiece[] =>
+    row.filter((piece: NPiece): boolean => piece?.team === Team.red)
   ) as Piece[];
-  const blackPieces: Piece[] = currState.flatMap((row) =>
-    row.filter((piece) => piece?.team === Team.black)
+  const blackPieces: Piece[] = currState.flatMap((row: NPiece[]): NPiece[] =>
+    row.filter((piece: NPiece): boolean => piece?.team === Team.black)
   ) as Piece[];
   const nextTurn = (state: State, move: Coord) => {
     setHistory((hist) => [
