@@ -7,19 +7,19 @@ function App() {
     <>
       <NavBar
         scrollToAbout={() =>
-          window.location.replace("https://mingyuanc.github.io")
+          window.location.assign("https://mingyuanc.github.io/#about")
         }
         scrollToProjects={() =>
-          window.location.replace("https://codefrontend.github.io")
+          window.location.assign("https://mingyuanc.github.io/#project")
         }
         scrollToExps={() =>
-          window.location.replace("https://codefrontend.github.io")
+          window.location.assign("https://mingyuanc.github.io/#experience")
         }
         scrollToSkills={() =>
-          window.location.replace("https://codefrontend.github.io")
+          window.location.assign("https://mingyuanc.github.io/#skill")
         }
         scrollToContact={() =>
-          window.location.replace("https://codefrontend.github.io")
+          window.location.assign("https://mingyuanc.github.io/#contact")
         }
       />
       <Chess />
